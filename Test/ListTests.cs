@@ -8,7 +8,8 @@ namespace CodeKata21.Test
   {
     private static IListFactory[] ListImplementations => new IListFactory[]
     {
-      new ListFactory<CheatingList>()
+      new ListFactory<CheatingList>(),
+      new ListFactory<SinglyLinkedList>()
     };
 
     [Test]
