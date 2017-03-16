@@ -10,7 +10,8 @@ namespace CodeKata21.Test
     {
       new ListFactory<CheatingList>(),
       new ListFactory<SinglyLinkedList>(),
-      new ListFactory<DoublyLinkedList>()
+      new ListFactory<DoublyLinkedList>(),
+      new ListFactory<ArrayList>()
     };
 
     [Test]
