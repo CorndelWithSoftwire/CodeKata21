@@ -8,7 +8,6 @@ namespace CodeKata21.Implementation
   public class SinglyLinkedList : ISimpleList
   {
     private readonly ListNode head = new HeadNode();
-    private ListNode tail;
 
     private class ListNode : IListNode
     {
@@ -21,16 +20,10 @@ namespace CodeKata21.Implementation
     {
     }
 
-    public SinglyLinkedList()
-    {
-      tail = head;
-    }
-
     public void Add(string value)
     {
       var newTail = new ListNode {Value = value};
-      tail.Next = newTail;
-      tail = newTail;
+      Nodes.Last().Next = newTail;
     }
 
     public IListNode Find(string value)
@@ -48,11 +41,6 @@ namespace CodeKata21.Implementation
       }
 
       previousNode.Next = ((ListNode) nodeToDelete).Next;
-
-      if (previousNode.Next == null)
-      {
-        tail = previousNode;
-      }
     }
 
     public string[] Values => Nodes.Skip(1).Select(node => node.Value).ToArray();
