@@ -35,9 +35,7 @@ namespace CodeKata21.Implementation
 
     public IListNode Find(string value)
     {
-      ListNode searchNode = head;
-
-      while ((searchNode = searchNode.Next) != null)
+      foreach (var searchNode in Nodes.Skip(1))
       {
         if (searchNode.Value == value)
         {
@@ -50,51 +48,35 @@ namespace CodeKata21.Implementation
 
     public void Delete(IListNode node)
     {
-      if (!(node is ListNode))
+      foreach (var searchNode in Nodes)
       {
-        throw new ArgumentException("Cannot delete a node from another type of list", nameof(node));
-      }
-
-      if (node is HeadNode)
-      {
-        // This should not be possible as we never return the HeadNode to the caller
-        throw new ArgumentException("Cannot delete the head of a list", nameof(node));
-      }
-      
-      var deleteNode = (ListNode) node;
-      ListNode searchNode = head;
-
-      while (searchNode != null)
-      {
-        if (searchNode.Next == deleteNode)
+        if (searchNode.Next == node)
         {
-          searchNode.Next = deleteNode.Next;
+          searchNode.Next = ((ListNode)node).Next;
 
-          if (deleteNode == tail)
+          if (node == tail)
           {
             tail = searchNode;
           }
 
           return;
         }
-
-        searchNode = searchNode.Next;
       }
 
       throw new InvalidOperationException("Node not found in the list");
     }
 
-    public string[] Values => ValueEnumerable.ToArray();
+    public string[] Values => Nodes.Skip(1).Select(node => node.Value).ToArray();
 
-    private IEnumerable<string> ValueEnumerable
+    private IEnumerable<ListNode> Nodes
     {
       get
       {
-        var currentNode = head.Next;
+        var currentNode = head;
 
         while (currentNode != null)
         {
-          yield return currentNode.Value;
+          yield return currentNode;
           currentNode = currentNode.Next;
         }
       }
