@@ -7,7 +7,7 @@ namespace CodeKata21.Implementation
 {
   public class SinglyLinkedList : ISimpleList
   {
-    private ListNode head;
+    private readonly ListNode head = new HeadNode();
     private ListNode tail;
 
     private class ListNode : IListNode
@@ -17,19 +17,19 @@ namespace CodeKata21.Implementation
       public ListNode Next { get; set; }
     }
 
+    private class HeadNode : ListNode
+    {
+    }
+
+    public SinglyLinkedList()
+    {
+      tail = head;
+    }
+
     public void Add(string value)
     {
       var newTail = new ListNode {Value = value};
-
-      if (tail == null)
-      {
-        head = newTail;
-      }
-      else
-      {
-        tail.Next = newTail;
-      }
-
+      tail.Next = newTail;
       tail = newTail;
     }
 
@@ -37,14 +37,12 @@ namespace CodeKata21.Implementation
     {
       ListNode searchNode = head;
 
-      while (searchNode != null)
+      while ((searchNode = searchNode.Next) != null)
       {
         if (searchNode.Value == value)
         {
           return searchNode;
         }
-
-        searchNode = searchNode.Next;
       }
 
       return null;
@@ -56,16 +54,13 @@ namespace CodeKata21.Implementation
       {
         throw new ArgumentException("Cannot delete a node from another type of list", nameof(node));
       }
-      
-      if (node == head)
+
+      if (node is HeadNode)
       {
-        head = head.Next;
-
-        if (head == null) tail = null;
-
-        return;
+        // This should not be possible as we never return the HeadNode to the caller
+        throw new ArgumentException("Cannot delete the head of a list", nameof(node));
       }
-
+      
       var deleteNode = (ListNode) node;
       ListNode searchNode = head;
 
@@ -95,7 +90,7 @@ namespace CodeKata21.Implementation
     {
       get
       {
-        var currentNode = head;
+        var currentNode = head.Next;
 
         while (currentNode != null)
         {
