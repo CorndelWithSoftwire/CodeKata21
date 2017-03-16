@@ -7,7 +7,7 @@ namespace CodeKata21.Implementation
 {
   public class DoublyLinkedList : ISimpleList
   {
-    private readonly ListNode head = new ListNode();
+    private readonly ListNode headAndTail = new ListNode();
 
     private class ListNode : IListNode
     {
@@ -18,11 +18,18 @@ namespace CodeKata21.Implementation
       public ListNode Next { get; set; }
     }
 
+    public DoublyLinkedList()
+    {
+      headAndTail.Prev = headAndTail;
+      headAndTail.Next = headAndTail;
+    }
+
     public void Add(string value)
     {
-      var oldTail = Nodes.Last();
-      var newTail = new ListNode { Value = value /*, Prev = oldTail*/ };
+      var oldTail = headAndTail.Prev;
+      var newTail = new ListNode { Value = value, Prev = oldTail, Next = headAndTail };
       oldTail.Next = newTail;
+      headAndTail.Prev = newTail;
     }
 
     public IListNode Find(string value)
@@ -40,11 +47,7 @@ namespace CodeKata21.Implementation
       }
 
       previousNode.Next = ((ListNode)nodeToDelete).Next;
-
-      if (previousNode.Next != null)
-      {
-        previousNode.Next.Prev = previousNode;
-      }
+      previousNode.Next.Prev = previousNode;
     }
 
     public string[] Values => Nodes.Skip(1).Select(node => node.Value).ToArray();
@@ -53,13 +56,13 @@ namespace CodeKata21.Implementation
     {
       get
       {
-        var currentNode = head;
+        var currentNode = headAndTail;
 
-        while (currentNode != null)
+        do
         {
           yield return currentNode;
           currentNode = currentNode.Next;
-        }
+        } while (currentNode != headAndTail);
       }
     }
   }
