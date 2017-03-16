@@ -7,17 +7,13 @@ namespace CodeKata21.Implementation
 {
   public class SinglyLinkedList : ISimpleList
   {
-    private readonly ListNode head = new HeadNode();
+    private readonly ListNode head = new ListNode();
 
     private class ListNode : IListNode
     {
       public string Value { get; set; }
 
       public ListNode Next { get; set; }
-    }
-
-    private class HeadNode : ListNode
-    {
     }
 
     public void Add(string value)
