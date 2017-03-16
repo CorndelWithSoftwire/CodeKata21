@@ -35,35 +35,24 @@ namespace CodeKata21.Implementation
 
     public IListNode Find(string value)
     {
-      foreach (var searchNode in Nodes.Skip(1))
-      {
-        if (searchNode.Value == value)
-        {
-          return searchNode;
-        }
-      }
-
-      return null;
+      return Nodes.Skip(1).FirstOrDefault(node => node.Value == value);
     }
 
-    public void Delete(IListNode node)
+    public void Delete(IListNode nodeToDelete)
     {
-      foreach (var searchNode in Nodes)
+      var previousNode = Nodes.FirstOrDefault(node => node.Next == nodeToDelete);
+
+      if (previousNode == null)
       {
-        if (searchNode.Next == node)
-        {
-          searchNode.Next = ((ListNode)node).Next;
-
-          if (node == tail)
-          {
-            tail = searchNode;
-          }
-
-          return;
-        }
+        throw new InvalidOperationException("Node not found in the list");
       }
 
-      throw new InvalidOperationException("Node not found in the list");
+      previousNode.Next = ((ListNode) nodeToDelete).Next;
+
+      if (previousNode.Next == null)
+      {
+        tail = previousNode;
+      }
     }
 
     public string[] Values => Nodes.Skip(1).Select(node => node.Value).ToArray();
