@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\CheatingList.cs" />
+    <Compile Include="Implementation\DoublyLinkedList.cs" />
     <Compile Include="Implementation\SinglyLinkedList.cs" />
     <Compile Include="Interface\IListNode.cs" />
     <Compile Include="Interface\ISimpleList.cs" />
